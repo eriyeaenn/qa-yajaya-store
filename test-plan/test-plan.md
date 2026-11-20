@@ -93,7 +93,7 @@ Yang bukan tujuan pengujian ini: menilai kualitas kode sumber, mengukur code cov
 ### 3.1 Entry Criteria — pengujian boleh dimulai bila:
 
 1. Website <https://www.yajaya.store/> bisa diakses dan mengembalikan HTTP 200.
-2. Inventaris website yang diuji sudah selesai dan didokumentasikan (dokumen inventaris).
+2. Inventaris website yang diuji sudah selesai dan didokumentasikan ([docs/site-inventory-2026-11-20.md](../docs/site-inventory-2026-11-20.md)).
 3. Test plan ini sudah disetujui oleh tim (lihat bagian 9).
 4. Lingkungan pengujian sudah siap: browser Chrome, Firefox, dan Edge; perangkat desktop dan mobile; akses internet stabil.
 5. Daftar test case manual sudah ditulis dan diberi ID serta prioritas.
