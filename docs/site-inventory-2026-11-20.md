@@ -1,10 +1,8 @@
-# Catatan penelusuran yajaya.store — 20 Nov 2026
+# Inventaris Website yajaya.store
 
-Kami menelusuri yajaya.store tanggal 20 November 2026, dua kali: pagi jam 11.19 sampai 11.24 WIB, dan sore jam 19.20 WIB. Hasil sore harinya sama persis dengan pagi, jadi catatan ini sudah jadi patokan.
+Dokumen ini mencatat hasil penelusuran website yajaya.store pada 20 November 2026. Penelusuran dilakukan dari desktop, secara read-only: tanpa membeli, tanpa mengisi form, dan tanpa mengirim pesan WhatsApp. Login tidak diuji karena website hanya menerima login lewat Google dan tidak menyediakan akun demo, sehingga halaman di balik login (dashboard, tracking pesanan, invoice, dan form order) tidak dapat diperiksa.
 
-Penelusuran ini cuma baca-baca saja, dari desktop. Kami tidak membeli apa-apa, tidak mengisi form, dan tidak mengirim pesan WhatsApp. Login juga tidak dicoba, karena login di sini butuh akun Google asli.
-
-Alamatnya https://yajaya.store.
+Alamat website: https://yajaya.store.
 
 ## Struktur website
 
