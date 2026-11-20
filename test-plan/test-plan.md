@@ -1,78 +1,281 @@
 # Test Plan — Pengujian Website yajaya.store
-Mengikuti ISO/IEC/IEEE 29119-3:2021 (Test Documentation) dan ISO/IEC/IEEE 29119-2:2021 (Test Processes).
-Penilaian kualitas mengikuti ISO/IEC 25010:2023. Evaluasi akhir mengikuti ISO/IEC 25040:2024.
 
-## 1. Pendahuluan
-- **Objek uji:** https://yajaya.store, website katalog kaos polos & sablon DTF satuan, UMKM di Parung, Bogor.
-- **Jenis usaha:** menengah ke bawah (UMKM, order via WhatsApp, tanpa cart/checkout/pembayaran on-site).
-- **Tujuan:** memverifikasi fungsi, kesesuaian konten/harga, dan kualitas interaksi website dari sudut pengguna, serta mendokumentasikan defect yang ditemukan.
-- **Riwayat pengujian:** inventaris pertama 7 Nov 2026 (website satu halaman, 16 produk, tanpa login). Website lalu diperbarui pemiliknya dan dicek ulang 20 Nov 2026 (multi-halaman, 19 produk, login Google). Test plan ini direvisi 20 Nov 2026 mengikuti kondisi terbaru. Inventaris lama tetap disimpan di `docs/site-inventory-2026-11-07.md` sebagai jejak, dan inventaris baru ada di `docs/site-inventory-2026-11-20.md`.
-- **Dokumen acuan:** lihat `references/standards-journals.md`.
+| Item | Keterangan |
+|---|---|
+| Objek uji | <https://www.yajaya.store/> (redirect dari <https://yajaya.store/>) |
+| Versi yang diuji | 20 November 2026 (multi-halaman, 19 produk, login Google-only) |
+| Baseline regression | 7 November 2026 (satu halaman, 16 produk, tanpa login) |
+| Standar acuan | ISO/IEC/IEEE 29119-1:2022, ISO/IEC/IEEE 29119-5:2024, ISO/IEC 25010:2023, ISO/IEC 25002:2024, ISO/IEC 25040:2024, IEEE 1012-2024 |
+| Sudut pandang | Tester dari sisi pelanggan (external / customer perspective) — tanpa white-box, tanpa akses source code |
+| Status dokumen | Revisi Tahap 2, 20 November 2026 |
+| Referensi lengkap | [references/standards-journals.md](../references/standards-journals.md) |
 
-## 2. Ruang lingkup
-### 2.1 Yang diuji (test items)
-- Halaman Home, Katalog, Sablon, Galeri, Blog, Tentang, Kontak, Login, Register, Dashboard (terbatas, lihat 2.3), dan 19 halaman detail produk.
-- Login dan register Google-only: tombol Google, pengalihan halaman login untuk rute yang terkunci, halaman register dan janji fiturnya.
-- Katalog 19 produk: pencarian, filter kategori, sortir harga, harga jual dan harga coret, badge diskon.
+Catatan soal standar: format dokumen test plan ini mengikuti struktur yang dijelaskan ISO/IEC/IEEE 29119-3:2021 sebagai konvensi kerja. Namun karena aturan tugas ini hanya menerima referensi 2022–2026, dan edisi terkini 29119-2, 29119-3, serta 29119-4 terbit tahun 2021, ketiga standar itu tidak dimasukkan ke daftar referensi formal. Penjelasan lengkapnya ada di [references/standards-journals.md](../references/standards-journals.md).
+
+## 1. Tujuan Pengujian (Test Objectives)
+
+Pengujian ini dilakukan untuk menjawab satu pertanyaan utama: **apakah website yajaya.store versi 20 November 2026 bisa dipakai oleh pembeli sungguhan untuk menemukan produk, memahami harga, dan memesan tanpa hambatan?**
+
+Tujuan rinciannya:
+
+1. Memverifikasi semua fungsi yang terlihat oleh pelanggan berjalan sesuai harapan: navigasi multi-halaman, login dan register, pencarian, filter, sortir, halaman detail produk, kalkulator sablon, galeri, blog, dan order lewat WhatsApp.
+2. Memverifikasi konsistensi konten dan harga di semua tempat produk itu muncul: kartu katalog, halaman detail, kategori di Home, dan tabel pricelist.
+3. Memastikan fitur lama dari versi 7 November 2026 tetap berjalan setelah update ke versi 20 November 2026 (regression testing).
+4. Menilai kualitas website menurut ISO/IEC 25010:2023 pada lima karakteristik prioritas: functional suitability, interaction capability, reliability, performance efficiency, dan security (sebatas yang bisa diuji dari luar).
+5. Mendokumentasikan setiap defect yang ditemukan dengan langkah reproduksi, bukti, severity, dan priority, supaya pemilik toko bisa memperbaikinya berdasarkan urutan prioritas.
+6. Menghasilkan bukti pengujian yang bisa dipertanggungjawabkan: test case yang bisa dijalankan ulang, log eksekusi, dan test report dengan verdict yang jelas.
+
+Yang bukan tujuan pengujian ini: menilai kualitas kode sumber, mengukur code coverage, menguji database atau API internal, dan melakukan penetration testing penuh. Semua itu berada di luar sudut pandang pelanggan.
+
+## 2. Ruang Lingkup Pengujian (Scope)
+
+### 2.1 In-Scope — yang diuji
+
+**Navigasi dan struktur multi-halaman**
+
+- Header di semua halaman: logo, menu Home, Katalog, Sablon, Galeri, Blog, Tentang, Kontak, tombol Masuk dan Daftar Akun.
+- Semua rute publik: `/`, `/katalog`, `/sablon`, `/galeri`, `/blog`, `/tentang`, `/kontak`, `/login`, `/register`, 19 halaman `/produk/<slug>`, 4 halaman `/blog/<slug>`.
+- Footer dan tautan di dalamnya.
+- Rute yang seharusnya tidak ada (`/cart`, `/checkout`, `/admin`) — diverifikasi menghasilkan 404.
+
+**Login dan register (Google-only)**
+
+- Halaman `/login` dan `/register`: tombol "Lanjutkan dengan Google" dan "Daftar Cepat dengan Google", teks dan janji fitur di halaman register.
+- Rute terkunci `/dashboard` dan `/dashboard/pesanan/baru`: perilaku saat dibuka tanpa login (pengalihan ke halaman login).
+- Dashboard, tracking pesanan, dan invoice: **terbatas** — hanya bisa diuji bila tersedia akun Google tes (lihat Risiko, bagian 7).
+
+**Katalog dan produk**
+
+- Katalog 19 produk: nama, harga jual, harga coret, badge diskon, rating, jumlah terjual.
+- Pencarian katalog (termasuk pencarian yang tidak menghasilkan apa-apa dan pencarian substring).
+- Filter kategori dan sortir harga (rendah ke tinggi, tinggi ke rendah), serta tombol sortir Populer, Terbaru, Terlaris.
 - Halaman detail produk: pilihan warna dan ukuran, jumlah, tombol Pesan Sekarang, link Beli di Shopee.
-- Kalkulator DTF dan tabel pricelist di /sablon.
-- Galeri: filter kategori dan lightbox.
-- Blog: daftar artikel dan halaman artikel.
-- Link keluar: WhatsApp (wa.me/628568703266), Instagram (@yajaya.id), TikTok (@yajaya.store), Shopee (shopee.co.id/yajaya.id) — diperiksa href-nya saja, tidak dikirim atau dibuka percakapannya.
-- Konsistensi konten: nama produk, harga di kartu vs halaman detail vs kategori Home, tanggal artikel blog, teks footer, judul halaman.
 
-### 2.2 Yang TIDAK diuji (tidak ada di website)
-Cart, checkout, pembayaran on-site, form order/kontak, validasi form email/password, ongkir, lacak pesanan, wishlist, halaman About/Privacy/Terms/Shipping/Returns, newsletter.
-Alasan: fitur tersebut tidak ada di situs (bukan gagal diuji). Dicatat sebagai keterbatasan produk, bukan defect, kecuali klaim di situs menyebutkannya (misalnya kartu Polo Shirt yang mengarah ke halaman order).
+**Sablon, galeri, blog**
 
-### 2.3 Yang diuji TERBATAS — butuh login Google asli
-Dashboard (/dashboard), form order (/dashboard/pesanan/baru), tracking pesanan, dan download/cetak invoice tidak bisa diuji tanpa akun Google asli, karena login di situs ini hanya lewat Google dan tidak ada akun demo. Statusnya: diblokir, bukan gagal. Kalau pemilik situs menyediakan akun tes, bagian ini diuji terpisah dan test plan diperbarui.
+- Kalkulator DTF dan tabel pricelist di `/sablon` (semua ukuran: Logo, A6+, A5, A4, A3).
+- Galeri `/galeri`: filter kategori dan lightbox.
+- Blog `/blog`: daftar artikel dan halaman artikel (termasuk keaktualan tanggal).
 
-## 3. Pendekatan & teknik (ISO/IEC/IEEE 29119-4:2021)
-| Keluarga teknik | Teknik | Dipakai untuk |
+**Alur order dan tautan keluar**
+
+- Tombol Pesan Sekarang di hero dan di halaman produk (diperiksa href-nya saja, pesan WhatsApp tidak dikirim).
+- Tautan WhatsApp, Instagram (@yajaya.id), TikTok (@yajaya.store), dan Shopee (shopee.co.id/yajaya.id).
+- Informasi pembayaran di `/kontak` (Bank Transfer, QRIS, E-Wallet).
+
+**Konsistensi konten dan harga**
+
+- Harga produk di kartu katalog vs halaman detail vs kategori Home vs pricelist.
+- Nama produk, warna, dan ukuran yang ditawarkan.
+- Teks di footer, judul halaman, dan tanggal artikel blog.
+
+**Pengujian non-fungsional dari luar**
+
+- Usability: kemudahan navigasi, kejelasan tombol dan label, konsistensi tampilan.
+- Compatibility: Chrome, Firefox, Edge; desktop dan mobile (360px, 768px).
+- Performance: response time, throughput, error rate (Apache JMeter).
+- Security eksternal: header keamanan HTTP dan validasi input dasar pada form login/input (OWASP ZAP + uji input manual).
+
+### 2.2 Out-of-Scope — yang TIDAK diuji
+
+| Item | Alasan |
+|---|---|
+| White-box testing (statement/branch/path coverage) | Butuh akses source code; sudut pandang proyek ini murni eksternal |
+| Code-level unit testing | Menguji fungsi di level kode, bukan perilaku yang terlihat pelanggan |
+| Pengujian database, API internal, dan backend | Tidak terlihat dari antarmuka pengguna |
+| Penetration testing penuh | Di luar cakupan tugas; yang dilakukan hanya DAST dasar dan uji input eksternal |
+| Cart, checkout, dan pembayaran on-site | Fitur ini tidak ada di website |
+| Form order/kontak dan validasi form email/password | Tidak ada kolom isian seperti itu di website (login hanya lewat Google) |
+| Pengiriman pesan WhatsApp dan pembelian lewat Shopee | Percakapan dan transaksi berada di luar website |
+| Pengujian kode hasil perubahan setelah 20 Nov 2026 | Inventaris 20 Nov 2026 adalah patokan; perubahan sesudahnya harus dicek ulang dulu |
+
+## 3. Kriteria Masuk (Entry Criteria) & Kriteria Keluar (Exit Criteria)
+
+### 3.1 Entry Criteria — pengujian boleh dimulai bila:
+
+1. Website <https://www.yajaya.store/> bisa diakses dan mengembalikan HTTP 200.
+2. Inventaris versi yang diuji sudah selesai dan didokumentasikan ([docs/site-inventory-2026-11-20.md](../docs/site-inventory-2026-11-20.md)).
+3. Test plan ini sudah disetujui oleh tim (lihat bagian 9).
+4. Lingkungan pengujian sudah siap: browser Chrome, Firefox, dan Edge; perangkat desktop dan mobile; akses internet stabil.
+5. Daftar test case manual sudah ditulis dan diberi ID serta prioritas.
+
+### 3.2 Exit Criteria — pengujian dinyatakan selesai bila:
+
+1. Semua test case manual prioritas High sudah dieksekusi, dan hasilnya tercatat di log eksekusi.
+2. Semua defect yang ditemukan sudah dilaporkan di [bug-reports/bug-reports.md](../bug-reports/bug-reports.md) dengan severity, priority, langkah reproduksi, dan status.
+3. Regression checklist untuk fitur versi 7 November 2026 sudah dieksekusi.
+4. Test otomatis (Cypress E2E smoke, JMeter, dan ZAP baseline scan) sudah dijalankan, atau statusnya dicatat sebagai `[DIISI_SETELAH_EKSEKUSI]` bila belum bisa dijalankan.
+5. Test report ([test-report/test-report.md](../test-report/test-report.md)) sudah berisi verdict akhir berdasarkan kerangka ISO/IEC 25040:2024.
+6. Wawancara dengan QA/tester berpengalaman minimal 3 tahun sudah dilakukan dan transkripnya sudah diisi, atau statusnya dicatat sebagai `[DIISI_SETELAH_WAWANCARA]`.
+
+### 3.3 Kriteria penangguhan (Suspension Criteria)
+
+Pengujian dihentikan sementara bila website tidak bisa diakses (HTTP 5xx atau down lebih dari 1 jam), atau bila pemilik website mengubah versi yang diuji di tengah jalan. Dalam kedua kasus itu, yang sudah dikerjakan dicatat apa adanya dan pengujian dilanjutkan setelah kondisi pulih atau inventaris diperbarui.
+
+## 4. Sumber Daya (Resources)
+
+### 4.1 Peran (Roles)
+
+| Peran | Tanggung jawab |
+|---|---|
+| Test Lead / penulis laporan | Menyusun test plan, test case, dan test report; mengoordinasikan eksekusi; menulis verdict akhir |
+| Manual Tester (anggota kelompok) | Mengeksekusi test case manual, mencatat actual result, melaporkan defect |
+| Automation Tester (anggota kelompok) | Menulis dan menjalankan skrip Cypress, JMeter, dan ZAP baseline scan |
+| Reviewer (anggota kelompok) | Memeriksa test case, bug report, dan test report sebelum push ke GitHub |
+| Narasumber wawancara | QA/tester profesional dengan pengalaman minimal 3 tahun (diwawancarai, bukan anggota tim penguji) |
+| Pemilik website (Yajaya Store) | Stakeholder eksternal; menerima laporan defect dan rekomendasi perbaikan |
+
+Catatan: laporan ini adalah tugas kelompok. Setiap anggota harus tercatat sebagai contributor di repository GitHub. Karena itu tidak ada push yang dilakukan tiba-tiba tanpa sepengetahuan anggota lain (lihat bagian 9).
+
+### 4.2 Hardware
+
+| Item | Spesifikasi minimal |
+|---|---|
+| Laptop/PC penguji | Prosesor dual-core, RAM 8 GB, layar 1366×768 atau lebih besar |
+| Perangkat mobile | Smartphone Android atau iOS, viewport 360px (untuk pengujian responsif) |
+| Koneksi internet | Stabil, cukup untuk memuat halaman dan menjalankan JMeter |
+
+### 4.3 Software / Tools
+
+| Tool | Kegunaan | Status |
 |---|---|---|
-| Specification-based (black-box) | Equivalence Partitioning, Boundary Value Analysis, Decision Table, State Transition | Search, filter kategori, sortir harga, kalkulator DTF, alur login Google, rute terkunci |
-| Structure-based (white-box) | Statement & branch/decision coverage | **TERBATAS / BERSYARAT:** hanya bisa penuh bila ada akses source code/repo. Repo yajaya-web sudah dibaca 17 Nov 2026 (read-only), tapi kodenya sudah berubah lagi sejak itu, jadi temuan white-box lama tidak dipakai untuk versi baru tanpa pengecekan ulang. |
-| Experience-based | Error guessing, exploratory testing | Filter dan lightbox galeri, harga kategori Home, pencarian substring, inkonsistensi konten |
-| Grey-box (gabungan) | Black-box + pengetahuan struktur client-side (Next.js, data produk di client) | Harga coret dan diskon, data produk terkait, mapping pencarian |
+| Google Chrome, Mozilla Firefox, Microsoft Edge | Browser pengujian manual dan compatibility testing | Tersedia |
+| Cypress | Automation E2E: login, navigasi, katalog, regression smoke | Draf skrip (Tahap 6), belum dieksekusi |
+| Apache JMeter | Performance testing: load, stress, spike | Rencana test case (Tahap 6), belum dieksekusi |
+| OWASP ZAP | Security DAST: baseline scan, header keamanan, uji input | Panduan (Tahap 6), belum dieksekusi |
+| Node.js | HTTP smoke test (pengganti sementara saat Playwright gagal) | Tersedia, hasil 5/5 lolos (7 Nov 2026) |
+| GitHub | Repository laporan, 1 direktori, riwayat commit sebagai bukti progress | Tersedia, publik |
+| Google Sheets / Markdown | Log eksekusi dan pencatatan defect | Tersedia |
 
-**Manual + otomatis (alasan jurnal):** Kurmaku dkk. (ACM/ISEC 2022) — meta-analisis 21 studi: otomatis lebih hemat biaya/coverage/waktu, manual sama/lebih baik dalam deteksi fault, bedanya tidak signifikan. Jadi dipakai keduanya, bukan salah satu. Gupta & Bathla (IJSRST 2022): keduanya komplementer.
-**Tool otomatis:** Playwright (bukan Selenium) — Melyawati dkk. (2024): Playwright 4,9 menit vs Selenium 8,3 menit untuk 12 test case yang sama. Pola keyword-driven mengikuti ISO/IEC/IEEE 29119-5:2024. Catatan: instalasi browser Playwright gagal 3x di mesin ini tanggal 7 Nov 2026 karena download dari CDN putus di sekitar 90 persen. Test otomatis level HTTP pakai Node sudah jalan (5 dari 5 lolos) dan perlu dijalankan ulang untuk versi baru, termasuk /sitemap.xml dan /robots.txt.
+Catatan soal Playwright: Playwright sempat dipakai untuk otomatisasi E2E, tetapi instalasi browsernya gagal 3 kali di mesin ini (download dari CDN putus di sekitar 90 persen). Karena itu otomatisasi E2E pindah ke Cypress. Skrip Playwright lama tetap disimpan di `automation/` sebagai arsip.
 
-## 4. Karakteristik kualitas yang dinilai (ISO/IEC 25010:2023)
-Prioritas: Functional Suitability, Interaction Capability, Reliability, Performance Efficiency, Security (hanya sebatas login Google dan link yang tampil — tidak ada pembayaran on-site untuk diuji pentest).
-Tidak diprioritaskan: Maintainability, Flexibility, Safety (butuh akses kode/infrastruktur).
+## 5. Strategi Pengujian (Test Strategy)
 
-## 5. Kriteria masuk / keluar (29119-2)
-- Masuk: situs dapat diakses (HTTP 200), inventaris versi terbaru selesai (20 Nov 2026).
-- Keluar: semua test case manual prioritas Tinggi dijalankan, semua test otomatis smoke pass/fail terdokumentasi, bug report berisi langkah reproduksi + bukti, Test Completion Report berisi verdict.
-- Verdict akhir memakai kerangka ISO/IEC 25040:2024 — bukan "lulus/gagal" mutlak, tapi rekomendasi per karakteristik + daftar perbaikan prioritas.
+Strategi pengujian proyek ini mengikuti ISO/IEC/IEEE 29119-1:2022 (konsep) dan ISO/IEC/IEEE 29119-5:2024 (keyword-driven untuk otomatisasi), dengan penilaian kualitas menurut ISO/IEC 25010:2023.
 
-## 6. Risiko & asumsi
-1. Tanpa akses source code versi terbaru, white-box tidak bisa diukur coverage-nya. Repo https://github.com/opikbtk/yajaya-web dicek terakhir 17 Nov 2026 — kodenya sudah berubah lagi sejak itu (login sekarang Google-only, bukan localStorage lagi).
-2. Dashboard tidak bisa diuji tanpa akun Google asli. Ini keterbatasan terbesar di versi baru.
-3. Website masih bisa berubah lagi selama pemiliknya mengoprek — inventaris 20 Nov 2026 adalah patokan, dan setiap perubahan setelahnya harus dicek ulang sebelum laporan final.
-4. Statistik 5.0 dari 29 ulasan Google dan jumlah terjual di kartu produk adalah klaim halaman, belum terverifikasi dari sumber independen.
-5. Percakapan WA, pengiriman, dan pembayaran berada di luar situs — tidak diuji.
-6. Pengujian baru hanya desktop; mobile/responsif masih harus diuji terpisah.
+### 5.1 Pengujian manual — 3 kategori (tanpa kode)
 
-## 7. Jadwal (draf, sesuaikan deadline dosen)
-1. Inventaris & revisi test plan — 20 Nov 2026 (selesai)
-2. Test case manual baru (login/auth, galeri, blog, sortir, kalkulator) + eksekusi — setelah test plan ini
-3. Test otomatis Playwright (smoke + regresi) + HTTP smoke ulang — setelah test case manual
-4. Wawancara QA/tester berpengalaman ≥3 tahun — paralel, panduan di `interview/`
-5. Bug report + Test Completion Report + push GitHub 1 direktori — akhir, setelah user bilang lanjut (aturan tugas kelompok: tidak ada push tiba-tiba)
+**Kategori 1 — Functional Testing (Black-Box).** Menguji apakah setiap fungsi berjalan sesuai spesifikasi yang terlihat dari luar. Teknik yang dipakai mengikuti ISO/IEC/IEEE 29119-4:2021 sebagai acuan teknik (edisi 2021, lihat catatan di atas): Equivalence Partitioning (misalnya rentang harga, ukuran, jumlah), Boundary Value Analysis (misalnya jumlah minimum 1, ukuran terbesar dan terkecil), dan Decision Table (misalnya kombinasi filter kategori dan sortir). Mencakup positive testing (input benar) dan negative testing (input salah atau kosong) untuk login, navigasi halaman, katalog/filter/pencarian, detail produk, dan order.
 
-## 8. Deliverable (struktur GitHub, 1 direktori)
+**Kategori 2 — Non-Functional Manual Testing (Usability & Compatibility).** Menguji kemudahan pemakaian dan konsistensi tampilan: apakah navigasi mudah dimengerti, apakah tombol dan label jelas, apakah tampilan konsisten di Chrome, Firefox, dan Edge, serta di layar desktop dan mobile. Karakteristik ISO/IEC 25010:2023 yang dinilai di sini: interaction capability dan sebagian reliability.
+
+**Kategori 3 — User Acceptance Testing (UAT / Beta Testing) & Basic Input Security.** Menguji alur bisnis end-to-end dari sudut pandang pelanggan nyata: dari membuka website, mencari produk, sampai memesan lewat WhatsApp. Dilengkapi kuesioner kepuasan pengguna skala Likert. Di kategori yang sama dilakukan uji input keamanan eksternal dasar pada form login dan kolom input: SQL Injection (`' OR '1'='1`) dan XSS (`<script>alert(1)</script>`) — hanya untuk melihat bagaimana website merespons input berbahaya, tanpa merusak data atau sistem.
+
+### 5.2 Pengujian otomatis (Automation)
+
+| Lapisan | Tool | Cakupan |
+|---|---|---|
+| E2E | Cypress | Login valid dan invalid, navigasi antar halaman, katalog dan filter, regression smoke (fitur lama versi 7 Nov) |
+| Performance | Apache JMeter | Load (50–100 user), stress (200–500 user), spike (lonjakan 10 ke 200 user); metrik response time, throughput, error rate |
+| Security DAST | OWASP ZAP | Baseline scan, pemeriksaan header keamanan HTTP, pemindaian pasif dan aktif pada halaman publik |
+
+Semua skrip otomatisasi masih berupa draf dan belum dieksekusi di lingkungan final. Hasil eksekusinya akan diisi di test report dengan penanda `[DIISI_SETELAH_EKSEKUSI]`.
+
+### 5.3 Regression Testing
+
+Regression testing dilakukan dalam dua bentuk:
+
+1. **Selective/partial regression checklist** — daftar periksa fitur lama dari versi 7 November 2026 (pencarian, filter kategori, order WhatsApp, konsistensi harga, tautan sosial) yang dieksekusi ulang di versi 20 November 2026. Checklist lengkapnya ada di [test-cases/test-cases-manual.md](../test-cases/test-cases-manual.md).
+2. **Regression smoke otomatis (Cypress)** — skrip smoke yang menjalankan skenario inti (buka home, buka katalog, cari produk, buka detail produk) setiap kali ada perubahan versi website.
+
+### 5.4 Karakteristik kualitas yang dinilai (ISO/IEC 25010:2023)
+
+| Karakteristik | Prioritas | Cara dinilai |
+|---|---|---|
+| Functional Suitability | Tinggi | Test case Kategori 1 + Cypress E2E |
+| Interaction Capability | Tinggi | Test case Kategori 2 (usability & compatibility) |
+| Reliability | Tinggi | Regression testing + konsistensi hasil di semua browser |
+| Performance Efficiency | Sedang | JMeter (response time, throughput, error rate) |
+| Security | Sedang | DAST ZAP + uji input dasar Kategori 3 |
+| Maintainability, Flexibility, Safety | Tidak dinilai | Butuh akses kode dan infrastruktur |
+
+### 5.5 Alasan manual + otomatis dipakai bersamaan
+
+Kurmaku dkk. (2022) me-meta-analisis 21 studi dan menyimpulkan testing otomatis lebih hemat biaya, coverage, dan waktu, tetapi testing manual sama baiknya, bahkan sedikit lebih baik, dalam menemukan fault — dan bedanya tidak signifikan secara statistik. Karena itu proyek ini memakai keduanya: manual untuk menemukan masalah yang butuh penilaian manusia (tampilan, konsistensi konten, alur bisnis), otomatis untuk mengulang skenario yang sama secara konsisten.
+
+## 6. Jadwal dan Milestone
+
+Deadline pengumpulan laporan: **Sabtu, 5 Desember 2026**. Aturan pacing dari dosen: progress di GitHub harus terlihat setiap 1–2 hari (kotak kontribusi hijau menyala), jadi pekerjaan dipecah per batch dan tidak di-push sekaligus.
+
+| Milestone | Target | Status per 20 Nov 2026 |
+|---|---|---|
+| Inventaris versi 7 Nov 2026 | 7 Nov 2026 | Selesai, sudah di-push |
+| Inventaris versi 20 Nov 2026 | 20 Nov 2026 | Selesai, sudah di-push |
+| Tahap 1 audit: README + referensi | 20 Nov 2026 | Selesai (lokal, belum di-push) |
+| Tahap 2 audit: test plan (dokumen ini) | 20 Nov 2026 | Selesai (lokal, belum di-push) |
+| Tahap 3 audit: test case manual | 21–23 Nov 2026 | Belum dimulai |
+| Tahap 4 audit: bug report | 23–25 Nov 2026 | Belum dimulai |
+| Tahap 5: test report | 25–27 Nov 2026 | Belum dimulai |
+| Tahap 6: automation (Cypress, JMeter, ZAP) | 27 Nov–1 Des 2026 | Belum dimulai |
+| Tahap 7: wawancara QA/tester | 27 Nov–1 Des 2026 | Belum dimulai (butuh narasumber) |
+| Eksekusi formal test case + retest | 1–3 Des 2026 | Belum dimulai |
+| Finalisasi laporan + push terakhir | 4–5 Des 2026 | Belum dimulai |
+
+Jadwal di atas adalah rencana. Kalau wawancara belum dapat narasumber atau dashboard belum bisa diuji, bagian yang tertunda dicatat sebagai `[DIISI_SETELAH_WAWANCARA]` atau `Blocked` di laporan, bukan diisi dengan hasil karangan.
+
+## 7. Risiko dan Mitigasi
+
+| # | Risiko | Dampak | Mitigasi |
+|---|---|---|---|
+| R1 | Website berubah lagi selama pengujian (pemilik masih mengoprek) | Inventaris dan test case kedaluwarsa | Patokan inventaris adalah 20 Nov 2026; setiap perubahan setelahnya dicek ulang dulu sebelum laporan final |
+| R2 | Dashboard tidak bisa diuji (butuh akun Google asli, tidak ada akun demo) | Test case login/auth sebagian Blocked | Catat sebagai Blocked dengan jelas; minta pemilik situs menyediakan akun tes; bila tidak ada, bagian dashboard ditulis sebagai keterbatasan, bukan defect |
+| R3 | Narasumber wawancara belum ada | Syarat wawancara tidak terpenuhi | Cari narasumber lebih awal lewat jaringan kampus dan komunitas; bila sampai akhir belum ada, panduan wawancara tetap dilampirkan dan transkrip ditandai `[DIISI_SETELAH_WAWANCARA]` |
+| R4 | Instalasi browser/tool otomatisasi gagal (pernah terjadi pada Playwright) | Otomatisasi tertunda | Siapkan fallback: HTTP smoke test (Node) untuk pemeriksaan dasar; jalankan Cypress/JMeter di mesin lain bila perlu |
+| R5 | Anggota kelompok tidak tercatat sebagai contributor | Penilaian kelompok bermasalah | Semua push dikoordinasikan dulu; pembagian tugas dan username GitHub anggota dicatat sebelum push berikutnya |
+| R6 | Pengujian mobile belum dilakukan | Defect responsif tidak ketahuan | Alokasikan sesi khusus mobile (360px, 768px) sebelum finalisasi |
+| R7 | Hasil eksekusi dikarang karena dikejar deadline | Integritas laporan rusak | Aturan keras: bagian yang belum dieksekusi diberi penanda `[DIISI_SETELAH_EKSEKUSI]` dan tidak boleh diisi angka karangan |
+
+## 8. Alur Kerja & Proses Pelaporan Defect
+
+### 8.1 Alur kerja pengujian
+
+1. Tester memilih test case dari [test-cases/test-cases-manual.md](../test-cases/test-cases-manual.md) berdasarkan prioritas.
+2. Tester menjalankan langkah-langkahnya di lingkungan yang dicatat (browser, ukuran layar, tanggal).
+3. Hasil aktual ditulis di log eksekusi ([test-cases/test-execution-log.md](../test-cases/test-execution-log.md)) dengan status Pass, Fail, atau Blocked.
+4. Kalau Fail, tester membuat laporan bug di [bug-reports/bug-reports.md](../bug-reports/bug-reports.md) dengan format di bawah.
+5. Reviewer memeriksa test case dan bug report sebelum di-push ke GitHub.
+
+### 8.2 Format laporan bug
+
+Setiap bug wajib berisi: Bug ID, judul, severity (1 Critical s.d. 5 Trivial), priority (1 Critical s.d. 4 Low), langkah reproduksi (steps to reproduce), expected result vs actual result, environment (browser, ukuran layar, tanggal), status dalam Bug Life Cycle, dan bukti (screenshot atau tautan) bila ada.
+
+### 8.3 Bug Life Cycle
+
 ```
-qa-yajaya-store/
-├── README.md
-├── docs/site-inventory-2026-11-07.md
-├── docs/site-inventory-2026-11-20.md
-├── test-plan/test-plan.md
-├── test-cases/test-cases-manual.md
-├── automation/ (Playwright + HTTP smoke)
-├── bug-reports/bug-reports.md
-├── interview/interview-guide.md + interview-transcript.md
-└── references/standards-journals.md
+New → Assigned → Open → Fixed → Pending Retest → Retest → Verified → Closed
 ```
+
+- **New:** bug baru dilaporkan, belum ditinjau.
+- **Assigned:** bug ditugaskan ke anggota tim untuk ditindaklanjuti (dalam konteks tugas ini: ditinjau dan dikonfirmasi ulang).
+- **Open:** bug dikonfirmasi dan sedang dikerjakan/ditunggu perbaikan pemilik website.
+- **Fixed:** pemilik website menyatakan sudah diperbaiki (atau tester memverifikasi perbaikannya di versi baru).
+- **Pending Retest:** menunggu pengujian ulang setelah perbaikan.
+- **Retest:** pengujian ulang sedang dilakukan.
+- **Verified:** pengujian ulang memastikan bug sudah hilang.
+- **Closed:** bug ditutup setelah terverifikasi.
+
+Kondisi khusus:
+
+- **Re-opened:** bug yang sudah Closed ternyata muncul lagi — kembali ke Open.
+- **Duplicate:** bug yang sama dengan bug lain yang sudah dilaporkan — ditutup sebagai duplikat dengan rujukan ke Bug ID aslinya.
+- **Rejected:** laporan yang setelah ditinjau ternyata bukan defect (misalnya perilaku yang memang disengaja) — ditutup dengan alasan.
+- **Deferred:** bug yang diakui tetapi perbaikannya ditunda ke luar cakupan tugas ini — dicatat dengan alasan penundaannya.
+
+Catatan: karena tim penguji adalah mahasiswa dan pemilik website adalah pihak eksternal, status `Fixed` dan `Closed` hanya bisa dicapai bila pemilik website benar-benar memperbaiki dan tester memverifikasi perbaikannya di website live. Bug yang belum diperbaiki pemiliknya tetap berstatus `Open` di laporan akhir — itu bukan kegagalan, itu temuan.
+
+## 9. Persetujuan dan Stakeholder
+
+| Peran | Nama / pihak | Persetujuan |
+|---|---|---|
+| Test Lead (penulis laporan) | [DIISI — nama anggota kelompok] | [DIISI — tanggal persetujuan] |
+| Anggota kelompok 1 | [DIISI — nama dan username GitHub] | [DIISI — tanggal persetujuan] |
+| Anggota kelompok 2 | [DIISI — nama dan username GitHub] | [DIISI — tanggal persetujuan] |
+| Anggota kelompok 3 | [DIISI — nama dan username GitHub] | [DIISI — tanggal persetujuan] |
+| Dosen pengampu Testing & QA | [DIISI — nama dosen] | [DIISI — tanggal persetujuan] |
+| Pemilik website (Yajaya Store) | Pemilik toko (stakeholder eksternal, penerima rekomendasi) | Tidak diminta persetujuan formal — menerima laporan defect dan rekomendasi |
+
+Aturan kolaborasi (tugas kelompok):
+
+- Tidak ada push ke GitHub yang dilakukan tiba-tiba. Setiap push dikoordinasikan dulu dengan anggota kelompok supaya semua anggota tercatat sebagai contributor.
+- Pesan commit ditulis natural dan deskriptif seperti mahasiswa biasa (contoh: "Update test plan", "Tambah test case"). Jangan memakai kata-kata meta seperti "rapikan gaya penulisan laporan" karena itu terlihat seperti hasil AI.
+- Gaya penulisan laporan natural seperti ditulis mahasiswa. Jangan memakai bahasa yang terlalu terlihat seperti template AI.
