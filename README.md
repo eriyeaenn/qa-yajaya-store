@@ -14,7 +14,9 @@ Folder `bug-reports/` berisi laporan bug yang kami temukan, sekarang sudah 13 bu
 
 ## Status sekarang
 
-Inventaris sudah selesai tanggal 7 November 2026. Test plan dan test case manual sudah jadi drafnya, eksekusi formalnya sebagian sudah jalan. White-box sudah dikerjakan, dan dari kode ketahuan penyebab lima bug, termasuk kenapa filter warna dan tombol reset tidak berfungsi. Wawancara masih menunggu narasumber. Test otomatis Playwright masih tertahan masalah download browser, sedangkan test HTTP-nya sudah jalan.
+Inventaris pertama selesai tanggal 7 November 2026, waktu webnya masih satu halaman dengan 16 produk dan tanpa login. Website lalu diperbarui pemiliknya, dan tanggal 20 November 2026 kami cek ulang: sekarang webnya multi-halaman, ada 19 produk, dan ada halaman login dan register yang cuma bisa lewat Google. Inventaris baru, test plan, test case, dan bug report sudah direvisi mengikuti kondisi terbaru tanggal 20 November 2026. File-file revisi itu masih di lokal, belum di-push, karena ini tugas kelompok dan push harus seizin semua anggota dulu.
+
+Yang masih tertahan: dashboard tidak bisa diuji tanpa akun Google asli, karena tidak ada akun demo. Wawancara masih menunggu narasumber. Test otomatis Playwright masih tertahan masalah download browser, sedangkan test HTTP-nya sudah jalan dan perlu dijalankan ulang untuk versi baru.
 
 ## Menjalankan test otomatis
 
