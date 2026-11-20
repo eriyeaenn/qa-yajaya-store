@@ -103,6 +103,7 @@ qa-yajaya-store/
 
 Tautan langsung ke file-file utama:
 
+- [Inventaris Website](docs/site-inventory-2026-11-20.md)
 - [Test Plan](test-plan/test-plan.md)
 - [Standar & Jurnal](references/standards-journals.md)
 
