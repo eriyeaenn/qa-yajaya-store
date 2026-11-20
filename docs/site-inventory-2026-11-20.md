@@ -1,6 +1,6 @@
 # Inventaris Website yajaya.store
 
-Dokumen ini mencatat hasil penelusuran website yajaya.store pada 20 November 2026. Penelusuran dilakukan dari desktop, secara read-only: tanpa membeli, tanpa mengisi form, dan tanpa mengirim pesan WhatsApp. Login tidak diuji karena website hanya menerima login lewat Google dan tidak menyediakan akun demo, sehingga halaman di balik login (dashboard, tracking pesanan, invoice, dan form order) tidak dapat diperiksa.
+Dokumen ini mencatat hasil penelusuran website yajaya.store pada 20 November 2026. Penelusuran dilakukan dari desktop, secara read-only: tanpa membeli, tanpa mengisi form, dan tanpa mengirim pesan WhatsApp. Bagian dashboard diperiksa setelah mendaftar dengan akun Google tes pada malam yang sama.
 
 Alamat website: https://yajaya.store.
 
@@ -77,6 +77,32 @@ Halaman /kontak tidak punya form kontak, cuma nomor WhatsApp 0856-870-3266, alam
 9. Iframe peta di /kontak tampil kosong saat dibuka, isinya belum terverifikasi.
 10. Foto hero di Home loadingnya lambat. Waktu pertama dibuka, heronya sempat kosong gelap sebelum fotonya muncul.
 
+## Dashboard (setelah login)
+
+Pendaftaran lewat Google berhasil dalam sekali klik. Akun tes tampil sebagai "hansenfarm" dengan status "Customer Terverifikasi" dan email dari profil Google. Dashboard (/dashboard) punya menu kiri: Ringkasan Akun, Pesanan & Tracking, Order Sablon Custom, Profil Pengguna, Lihat Etalase Toko, dan Keluar Akun. Statistiknya semua nol untuk akun baru: Total Pesanan 0, Menunggu Bayar 0, Diproses & Kirim 0, Pesanan Selesai 0. Bagian "Aktivitas Pesanan Terakhir" menulis "Belum ada pesanan aktif". Ada banner "Kustom Sablon DTF & Plastisol Satuan" dengan tombol "Buat Pesanan Sekarang", dan tombol WhatsApp melayang di setiap halaman.
+
+Form order (/dashboard/pesanan/baru) berjudul "Form Pemesanan & Kalkulator Sablon Custom" dengan estimasi harga real-time, dalam 6 langkah:
+
+1. Pilih Jenis Pakaian: "Bawa Kaos Sendiri (Hanya Sablon)" Rp0 (terpilih), Cotton Combed 30s Premium Rp40.000, Cotton Combed 24s Heavyweight Rp55.000, Polo Shirt Lacoste Pique CVC Rp85.000, Hoodie Cotton Fleece 330gsm Rp155.000.
+2. Pilih Warna Dasar Kaos: Hitam Reaktif (terpilih), Putih Solid, Navy Blue, Maroon Tua, Sage Green, Abu Misty.
+3. Pilih Metode Sablon: Sablon DTF (bisa satuan, 1 pcs); Sablon Plastisol Manual (minimal 12 pcs, terkunci kalau jumlah kurang dari 12).
+4. Pilih Posisi Sablon (bisa pilih lebih dari satu): Dada Kiri (Logo) +Rp10.000, Dada Depan (A4) +Rp25.000 (terpilih), Dada Depan Besar (A3) +Rp40.000, Punggung Belakang (A3) +Rp40.000, Lengan Kiri/Kanan +Rp10.000.
+5. Rincian Ukuran & Jumlah: S, M, L, XL, XXL, semuanya 0. Total 0 pcs.
+6. File Desain & Pengiriman: upload file desain atau mockup (PNG, JPG, PDF), No. WhatsApp Konfirmasi (wajib, kosong), Alamat Pengiriman (wajib), Catatan Tambahan untuk Tukang Sablon (opsional).
+
+Panel "Rincian Estimasi Biaya" di kanan menampilkan harga kain satuan, biaya sablon per item, harga satuan jadi, kuantitas total, subtotal, dan total akhir. Diskon jumlah: 12–23 pcs 5%, 24–59 pcs 10%, 60+ pcs 15%. Tombol submit tidak aktif sampai jumlah minimal 1 pcs diisi. Pembayaran tampaknya dikonfirmasi lewat transfer WhatsApp ("Konfirmasi transfer WA"), bukan lewat payment gateway di website.
+
+Halaman tracking (/dashboard/pesanan) berjudul "Tracking & Riwayat Pesanan" dengan filter status (Semua, Menunggu Pembayaran, Diproses, Dikirim, Selesai), kolom pencarian nomor pesanan, tombol Reset Filter, dan tombol Buat Pesanan Baru. Karena akun baru belum punya pesanan, halamannya cuma menampilkan "Tidak ada pesanan yang sesuai". Timeline produksi (afdruk sampai pengiriman) dan invoice tidak bisa diperiksa tanpa pesanan: tidak ada halaman invoice, tautan invoice, atau tombol download/cetak invoice di mana pun di dashboard akun baru ini.
+
+Halaman profil (/dashboard/profil) menampilkan Nama Lengkap "hansenfarm", email (terkunci, tidak bisa diubah), Nomor WhatsApp Aktif (wajib, kosong), alamat (kosong), Kota "Bogor", Kode Pos "16143", dan tombol "Simpan Perubahan".
+
+## Hal yang kelihatan aneh di dashboard
+
+1. Kolom Alamat Pengiriman di form order sudah terisi "Jl. Pajajaran No. 45, Bogor" padahal pemilik akun tidak pernah mengisinya. Di halaman profil, kolom alamat justru kosong. Kalau pengguna submit tanpa sadar, pesanannya akan memakai alamat yang tidak pernah dia berikan. Kota "Bogor" dan Kode Pos "16143" juga sudah terisi untuk akun baru.
+2. Header masih menampilkan tombol "Masuk" dan "Daftar Akun" padahal pengguna sudah login, sampai pengecekan login di dashboard selesai — baru setelah itu header berubah menampilkan nama akun dengan titik hijau online.
+3. Setiap pindah halaman dashboard selalu muncul layar loading "Memuat portal dashboard..." selama beberapa detik sebelum konten tampil.
+4. Harga di form order menjelaskan dua hal yang sebelumnya kelihatan aneh: Polo Shirt Rp85.000 dan Hoodie Rp155.000 memang ada sebagai pilihan pakaian di form order custom — jadi angka "Mulai Rp85.000" dan "Mulai Rp155.000" di kategori Home cocok dengan harga form order, bukan dengan harga katalog. Tapi kategori Polo Shirt di Home tetap mengarah ke halaman order yang minta login, dan tetap tidak ada produk polo di katalog.
+
 ## Batasan penelusuran ini
 
-Penelusuran ini baru dari desktop, jadi tampilan HP dan tablet belum diuji. Semua yang ada di balik login Google tidak bisa dicek: isi dashboard, beda admin dan customer, tracking pesanan, download dan cetak invoice, dan form order di /dashboard/pesanan/baru. Pesan error login juga tidak bisa dicek karena tidak ada kolom login. Pengiriman pesan WhatsApp dan pembelian lewat Shopee tidak dicoba. Tombol WhatsApp melayang, isi peta di halaman kontak, 17 halaman detail produk selain kaos-30s dan hoodie, dan tombol sortir Populer, Terbaru, Terlaris belum sempat dicek. Angka 5.0 dari 29 ulasan Google dan jumlah terjual di kartu produk itu klaim yang tertulis di halaman, belum kami verifikasi dari sumber lain.
+Penelusuran ini baru dari desktop, jadi tampilan HP dan tablet belum diuji. Yang masih belum bisa dicek: timeline tracking produksi dan invoice, karena keduanya baru muncul setelah ada pesanan — akun tes ini belum pernah memesan. Bedanya tampilan admin dan customer juga belum bisa dicek karena akun tes ini akun customer. Pesan error login tidak bisa dicek karena tidak ada kolom login. Pengiriman pesan WhatsApp dan pembelian lewat Shopee tidak dicoba. Tombol WhatsApp melayang, isi peta di halaman kontak, 17 halaman detail produk selain kaos-30s dan hoodie, dan tombol sortir Populer, Terbaru, Terlaris belum sempat dicek. Angka 5.0 dari 29 ulasan Google dan jumlah terjual di kartu produk itu klaim yang tertulis di halaman, belum kami verifikasi dari sumber lain.
