@@ -24,7 +24,7 @@ Website ini memenuhi kriteria tugas karena skalanya menengah ke bawah:
 - **Dibuat untuk usaha nyata, bukan tugas kuliah atau demo.** Website ini adalah etalase dan kanal order sungguhan untuk toko yang beroperasi. Itu penting: defect yang ditemukan di sini berdampak langsung ke pembeli dan ke pemilik toko, bukan sekadar nilai di atas kertas.
 - **Cukup kompleks untuk diuji dengan serius.** Ada multi-halaman, login, pencarian, filter, sortir, kalkulator harga sablon, galeri, dan blog. Cukup luas untuk black-box testing, UAT, regression testing, dan otomatisasi, tetapi tidak sebesar e-commerce umum yang tidak mungkin selesai dalam satu semester.
 
-Website yang diuji adalah website multi-halaman: Home, Katalog, Sablon, Galeri, Blog, Tentang, Kontak, Login, Register, dan Dashboard, dengan 19 halaman detail produk dan 4 halaman artikel blog. Login dan register hanya bisa lewat Google — tidak ada kolom email atau password, dan tidak ada akun demo, jadi dashboard, tracking pesanan, dan invoice ada di balik login dan belum bisa diuji tanpa akun Google asli.
+Website yang diuji adalah website multi-halaman: Home, Katalog, Sablon, Galeri, Blog, Tentang, Kontak, Login, Register, dan Dashboard, dengan 19 halaman detail produk dan 4 halaman artikel blog. Login dan register hanya bisa lewat Google — tidak ada kolom email atau password, dan tidak ada akun demo, jadi dashboard, tracking pesanan, dan invoice ada di balik login. Dashboard sudah diuji dengan akun Google — lihat Status Proyek.
 
 ## 2. Sudut Pandang Pengujian
 
@@ -72,7 +72,7 @@ Kurmaku dkk. (2022) me-meta-analisis 21 studi dan menyimpulkan testing otomatis 
 - **Test case manual:** 40 test case sudah ditulis, sebagian sudah dieksekusi saat inventarisasi.
 - **Bug report:** 23 bug sudah didokumentasikan (BUG-01 sampai BUG-23), lengkap dengan langkah reproduksi, severity, dan priority.
 - **Test otomatis:** HTTP smoke test sudah jalan (5 dari 5 lolos). Otomatisasi E2E pindah ke Cypress (Tahap 6).
-- **Dashboard:** Dashboard: sudah diuji dengan akun Google (akun tes 'hansenfarm') — menu, statistik, form order 6 langkah, dan tracking sudah diperiksa. Yang belum bisa diuji: timeline tracking produksi dan invoice, karena keduanya baru muncul setelah ada pesanan.
+- **Dashboard:** sudah diuji dengan akun Google (akun tes 'hansenfarm') — menu, statistik, form order 6 langkah, dan tracking sudah diperiksa. Yang belum bisa diuji: timeline tracking produksi dan invoice, karena keduanya baru muncul setelah ada pesanan.
 - **Wawancara:** belum ada narasumber. Panduan wawancara sudah siap; transkrip akan diisi setelah wawancara nyata (Tahap 7).
 
 ## 5. Struktur Repository
@@ -85,10 +85,10 @@ qa-yajaya-store/
 ├── test-plan/
 │   └── test-plan.md                        # Test plan
 ├── test-cases/
-│   ├── test-cases-manual.md                # Test case manual (35 test case)
+│   ├── test-cases-manual.md                # Test case manual (40 test case)
 │   └── test-execution-log.md               # Log eksekusi test case
 ├── bug-reports/
-│   └── bug-reports.md                      # Bug report (10 bug)
+│   └── bug-reports.md                      # Bug report (23 bug)
 ├── references/
 │   └── standards-journals.md               # Standar ISO/IEEE & jurnal 2022–2026
 ├── automation/
