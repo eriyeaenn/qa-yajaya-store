@@ -2,7 +2,7 @@
 
 Laporan tugas Testing & QA: pengujian website katalog kaos polos dan sablon DTF satuan milik Yajaya Store, Parung, Bogor. Pengujian dilakukan murni dari sudut pandang pelanggan (external / customer perspective): semua yang diuji adalah antarmuka pengguna, alur bisnis, perilaku HTTP dan performa, serta validasi input dari luar. Tidak ada white-box testing dan tidak ada akses ke source code backend.
 
-Standar acuan: ISO/IEC/IEEE 29119 dan ISO/IEC 25010:2023. Semua standar dan jurnal yang dipakai terbit 2022–2026, lengkapnya di [references/standards-journals.md](references/standards-journals.md).
+Standar acuan: ISO/IEC/IEEE 29119 dan ISO/IEC 25010:2023. Semua standar dan jurnal yang dipakai terbit 2022–2026, lengkapnya di [01-references/standards-journals.md](01-references/standards-journals.md).
 
 ## Daftar Isi
 
@@ -89,7 +89,7 @@ qa-yajaya-store/
 │   └── test-execution-log.md               # Log eksekusi test case
 ├── bug-reports/
 │   └── bug-reports.md                      # Bug report (23 bug)
-├── references/
+├── 01-references/
 │   └── standards-journals.md               # Standar ISO/IEEE & jurnal 2022–2026
 ├── automation/
 │   ├── cypress/                            # (direncanakan, Tahap 6)
@@ -105,7 +105,7 @@ Tautan langsung ke file-file utama:
 
 - [Inventaris Website](00-docs/site-inventory-2026-11-20.md)
 - [Test Plan](test-plan/test-plan.md)
-- [Standar & Jurnal](references/standards-journals.md)
+- [Standar & Jurnal](01-references/standards-journals.md)
 
 ## 6. Menjalankan Test Otomatis
 

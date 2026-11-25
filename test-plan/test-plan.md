@@ -7,9 +7,9 @@
 | Standar acuan | ISO/IEC/IEEE 29119-1:2022, ISO/IEC/IEEE 29119-5:2024, ISO/IEC 25010:2023, ISO/IEC 25002:2024, ISO/IEC 25040:2024, IEEE 1012-2024 |
 | Sudut pandang | Tester dari sisi pelanggan (external / customer perspective) — tanpa white-box, tanpa akses source code |
 | Status dokumen | 20 November 2026 |
-| Referensi lengkap | [references/standards-journals.md](../references/standards-journals.md) |
+| Referensi lengkap | [01-references/standards-journals.md](../01-references/standards-journals.md) |
 
-Catatan soal standar: format dokumen test plan ini mengikuti struktur yang dijelaskan ISO/IEC/IEEE 29119-3:2021 sebagai konvensi kerja. Namun karena aturan tugas ini hanya menerima referensi 2022–2026, dan edisi terkini 29119-2, 29119-3, serta 29119-4 terbit tahun 2021, ketiga standar itu tidak dimasukkan ke daftar referensi formal. Penjelasan lengkapnya ada di [references/standards-journals.md](../references/standards-journals.md).
+Catatan soal standar: format dokumen test plan ini mengikuti struktur yang dijelaskan ISO/IEC/IEEE 29119-3:2021 sebagai konvensi kerja. Namun karena aturan tugas ini hanya menerima referensi 2022–2026, dan edisi terkini 29119-2, 29119-3, serta 29119-4 terbit tahun 2021, ketiga standar itu tidak dimasukkan ke daftar referensi formal. Penjelasan lengkapnya ada di [01-references/standards-journals.md](../01-references/standards-journals.md).
 
 ## 1. Tujuan Pengujian (Test Objectives)
 
