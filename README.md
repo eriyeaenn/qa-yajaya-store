@@ -80,7 +80,7 @@ Kurmaku dkk. (2022) me-meta-analisis 21 studi dan menyimpulkan testing otomatis 
 ```
 qa-yajaya-store/
 ├── README.md
-├── docs/
+├── 00-docs/
 │   └── site-inventory-2026-11-20.md        # Inventaris website (multi-halaman, 19 produk, login)
 ├── test-plan/
 │   └── test-plan.md                        # Test plan
@@ -103,7 +103,7 @@ qa-yajaya-store/
 
 Tautan langsung ke file-file utama:
 
-- [Inventaris Website](docs/site-inventory-2026-11-20.md)
+- [Inventaris Website](00-docs/site-inventory-2026-11-20.md)
 - [Test Plan](test-plan/test-plan.md)
 - [Standar & Jurnal](references/standards-journals.md)
 
