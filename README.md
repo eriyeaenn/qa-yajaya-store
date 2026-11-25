@@ -31,7 +31,7 @@ Website yang diuji adalah website multi-halaman: Home, Katalog, Sablon, Galeri, 
 Pengujian di proyek ini dilakukan sebagai **tester dari sisi pelanggan**. Artinya:
 
 - Yang diuji adalah apa yang dilihat dan dilakukan pembeli: membuka halaman, mencari produk, memilih warna dan ukuran, menghitung harga sablon, mengklik tombol, dan mencoba login.
-- Yang **tidak** diuji adalah kode sumber, database, API internal, dan unit test di level kode. White-box testing dan code-level unit testing dinyatakan **out-of-scope** di [test-plan/test-plan.md](test-plan/test-plan.md).
+- Yang **tidak** diuji adalah kode sumber, database, API internal, dan unit test di level kode. White-box testing dan code-level unit testing dinyatakan **out-of-scope** di [02-test-plan/test-plan.md](02-test-plan/test-plan.md).
 
 Konsekuensinya, defect yang dilaporkan di sini selalu disertai langkah reproduksi dari antarmuka pengguna, bukan dari baris kode. Kalau sebuah masalah hanya bisa dibuktikan dengan membaca kode, masalah itu tidak dilaporkan sebagai bug di laporan ini.
 
@@ -82,7 +82,7 @@ qa-yajaya-store/
 ├── README.md
 ├── 00-docs/
 │   └── site-inventory-2026-11-20.md        # Inventaris website (multi-halaman, 19 produk, login)
-├── test-plan/
+├── 02-test-plan/
 │   └── test-plan.md                        # Test plan
 ├── test-cases/
 │   ├── test-cases-manual.md                # Test case manual (40 test case)
@@ -104,7 +104,7 @@ qa-yajaya-store/
 Tautan langsung ke file-file utama:
 
 - [Inventaris Website](00-docs/site-inventory-2026-11-20.md)
-- [Test Plan](test-plan/test-plan.md)
+- [Test Plan](02-test-plan/test-plan.md)
 - [Standar & Jurnal](01-references/standards-journals.md)
 
 ## 6. Menjalankan Test Otomatis
